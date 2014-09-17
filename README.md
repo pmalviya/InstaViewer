@@ -19,4 +19,6 @@ Implemented User Stories:
 
 7. Extra: Profile pics of commenters
 
+8. Extra: Location of Instagram post
+
 ![Video Walkthrough](InstaViewDemo.gif)
