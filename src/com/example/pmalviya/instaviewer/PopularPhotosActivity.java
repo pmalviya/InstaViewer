@@ -75,41 +75,29 @@ public class PopularPhotosActivity extends Activity {
 					photos.clear();
 					photosJSON = response.getJSONArray("data");
 					for (int i = 0; i < photosJSON.length(); i++) {
+						
+						//Get attributes from the JSON data received from End point
+						
+						// And create a InstaPhoto model with required attributes
 						JSONObject photoJSON = photosJSON.getJSONObject(i);
 						long time = photoJSON.getLong("created_time");
-						String userName = photoJSON.getJSONObject("user")
-								.getString("username");
-						int likesCount = photoJSON.getJSONObject("likes")
-								.getInt("count");
-						String imageURL = photoJSON.getJSONObject("images")
-								.getJSONObject("standard_resolution")
-								.getString("url");
-						String proficPicURL = photoJSON.getJSONObject("user")
-								.getString("profile_picture");
+						String userName = photoJSON.getJSONObject("user").getString("username");
+						int likesCount = photoJSON.getJSONObject("likes").getInt("count");
+						String imageURL = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
+						String proficPicURL = photoJSON.getJSONObject("user").getString("profile_picture");
 
 						String location = "";
-						if (!photoJSON.isNull("location")
-								&& photoJSON.getJSONObject("location") != null) {
+						if (!photoJSON.isNull("location")) {
 							if (photoJSON.getJSONObject("location").has("name")) {
 								location = photoJSON.getJSONObject("location").getString("name");
-							} else if (photoJSON.getJSONObject("location").has(
-									"latitude")
-									&& photoJSON.getJSONObject("location").has(
-											"longitude")) {
-								Geocoder gcd = new Geocoder(getBaseContext(),
-										Locale.getDefault());
-								double lat = photoJSON
-										.getJSONObject("location").getDouble(
-												"latitude");
-								double lng = photoJSON
-										.getJSONObject("location").getDouble(
-												"longitude");
+							} else if (photoJSON.getJSONObject("location").has("latitude") && photoJSON.getJSONObject("location").has("longitude")) {
+								Geocoder gcd = new Geocoder(getBaseContext(),Locale.getDefault());
+								double lat = photoJSON.getJSONObject("location").getDouble("latitude");
+								double lng = photoJSON.getJSONObject("location").getDouble("longitude");
 								try {
-									List<Address> addresses = gcd
-											.getFromLocation(lat, lng, 1);
+									List<Address> addresses = gcd.getFromLocation(lat, lng, 1);
 									if (addresses.size() > 0) {
-										location = addresses.get(0)
-												.getLocality();
+										location = addresses.get(0).getLocality();
 									}
 								} catch (IOException e) {
 
@@ -118,18 +106,11 @@ public class PopularPhotosActivity extends Activity {
 							}
 						}
 						String caption = "";
-						if (!photoJSON.isNull("caption")
-								&& photoJSON.getJSONObject("caption").has(
-										"text")) {
-							caption = photoJSON.getJSONObject("caption")
-									.getString("text");
+						if (!photoJSON.isNull("caption") && photoJSON.getJSONObject("caption").has("text")) {
+							caption = photoJSON.getJSONObject("caption").getString("text");
 						}
-						int height = photoJSON.getJSONObject("images")
-								.getJSONObject("standard_resolution")
-								.getInt("height");
-						int width = photoJSON.getJSONObject("images")
-								.getJSONObject("standard_resolution")
-								.getInt("width");
+						int height = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+						int width = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("width");
 						Comment comment1 = null;
 						Comment comment2 = null;
 						if (!photoJSON.isNull("comments") && photoJSON.getJSONObject("comments").has("count")) {

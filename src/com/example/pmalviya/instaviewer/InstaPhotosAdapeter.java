@@ -39,14 +39,13 @@ public class InstaPhotosAdapeter extends ArrayAdapter<InstaPhotoModel> {
 		// Lookup the subview within the template
 		TextView tvName = (TextView) convertView.findViewById(R.id.tvName);
 		TextView tvTime = (TextView) convertView.findViewById(R.id.tvTime);
-		TextView tvCaption = (TextView) convertView
-				.findViewById(R.id.tvCaptionText);
+		TextView tvCaption = (TextView) convertView.findViewById(R.id.tvCaptionText);
 		ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivImage);
-		ImageView ivProfilePic = (ImageView) convertView
-				.findViewById(R.id.ivProfilePic);
-		TextView tvLocation = (TextView) convertView
-				.findViewById(R.id.tvLocation);
+		ImageView ivProfilePic = (ImageView) convertView.findViewById(R.id.ivProfilePic);
+		TextView tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
 		TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
+		
+		// Set the content for subviews
 		tvLikes.setText(photo.getLikesCount() + " likes");
 		tvName.setText(photo.getUserName());
 		tvCaption.setText(Html.fromHtml("<font color=\"#206199\"><b>" + photo.getUserName() + "  " + "</b></font>" + photo.getCaption()));
@@ -76,11 +75,15 @@ public class InstaPhotosAdapeter extends ArrayAdapter<InstaPhotoModel> {
 					+ photo.getLastComment().getCommentStr()));
 			Picasso.with(getContext()).load(photo.getLastComment().getCommenterProfilePicURL()).resize(20, 20).centerCrop().into(ivCommenter2Pic);
 		}
-		// Ask for photo to be added to the imageview based on image url
-		// send network request to the url, download the image bytes, convert
-		// iinto bitmap, resize image,
 		
+		
+		// Ask for photo to be added to the imageview based on image url
+		// send network request to the url, download the image bytes, resize image
+		
+		//calculate the aspectRatio
 		float aspectRatio =  photo.getWidth()/photo.getHeight();
+		
+		//Get the screen width
 		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		Point size = new Point();
@@ -89,6 +92,7 @@ public class InstaPhotosAdapeter extends ArrayAdapter<InstaPhotoModel> {
 		int calculatedHeight = (int) (screenWidth /aspectRatio);
 		ivPhoto.getLayoutParams().height = calculatedHeight;
 		
+		//resize the image before setting it in the view
 		Picasso.with(getContext()).load(photo.getImageURL()).resize(screenWidth,calculatedHeight ).into(ivPhoto);
 		ivProfilePic.getLayoutParams().height = 80;
 		Picasso.with(getContext()).load(photo.getProfilePicURL())
@@ -96,7 +100,4 @@ public class InstaPhotosAdapeter extends ArrayAdapter<InstaPhotoModel> {
 		// return the view
 		return convertView;
 	}
-
-	// GetView method (int position)
-	// Calls toString on InstaPhotoModel
 }
